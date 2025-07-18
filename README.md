@@ -3,6 +3,7 @@ Repositório para meu projeto Springboot
 
 ## Diagrama de classes
 
+```mermaid
 erDiagram
     user ||--o{ account : "1"
     account ||--o{ billing_address : "1"
