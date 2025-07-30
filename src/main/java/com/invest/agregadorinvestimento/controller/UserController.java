@@ -3,6 +3,7 @@ package com.invest.agregadorinvestimento.controller;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.invest.agregadorinvestimento.dto.CreateUserDto;
 import com.invest.agregadorinvestimento.entity.User;
-import com.invest.service.UserService;
+import com.invest.agregadorinvestimento.service.UserService;
+
+
 
 @RestController
 @RequestMapping("/v1/users")
+
 public class UserController {
     private UserService userService;
 
@@ -24,15 +28,16 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserDto body) {
+    public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto) {
 
-        var userId = userService.createUser(body);
+        var userId = userService.createUser(createUserDto);
 
         return ResponseEntity.created(URI.create("/v1/users/" + userId.toString())).build();
     }
+    
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") String userId) {
-        
+        //vou fazer depois
         return null;
     }
 
