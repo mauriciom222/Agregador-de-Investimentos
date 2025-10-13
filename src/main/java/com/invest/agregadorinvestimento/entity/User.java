@@ -1,6 +1,7 @@
 package com.invest.agregadorinvestimento.entity;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,7 +12,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+
+
+
+
 
 
 
@@ -26,7 +33,7 @@ public class User {
     private UUID userId;
 
     @Column(name ="username")
-    private String userName;
+    private String username;
     @Column(name ="email")
     private String email;
     @Column(name ="password")
@@ -36,28 +43,33 @@ public class User {
     private Instant creationTimestamp;
     @UpdateTimestamp
     private Instant updatedTimestamp;
+     
+    // Relação One-to-Many com Account
+    
+    @OneToMany(mappedBy = "user")//Nome do atributo na classe Account
+    private List<Account> accounts;
 
     
+    public User() {
+    }
 
- 
 
-    public User(UUID userId, String userName, String email, String password, Instant creationTimestamp,
+    public User(UUID userId, String username, String email, String password, Instant creationTimestamp,
         Instant updatedTimestamp) {
         this.userId = userId;
-        this.userName = userName;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.creationTimestamp = creationTimestamp;
         this.updatedTimestamp = updatedTimestamp;
     }
-    public User() {
-    }
+  
     public UUID getUserId() {
         return userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getEmail() {
@@ -80,8 +92,8 @@ public class User {
         this.userId = userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public void setEmail(String email) {
@@ -100,9 +112,19 @@ public class User {
         this.updatedTimestamp = updatedTimestamp;
     }
 
+
+    
+
+  
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
     @Override
     public String toString() {
-        return "User [userId=" + userId + ", userName=" + userName + ", email=" + email + ", password=" + password
+        return "User [userId=" + userId + ", userName=" + username + ", email=" + email + ", password=" + password
                 + ", creationTimestamp=" + creationTimestamp + ", updatedTimestamp=" + updatedTimestamp + "]";
     }
 
