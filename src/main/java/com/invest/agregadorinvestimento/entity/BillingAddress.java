@@ -2,17 +2,29 @@ package com.invest.agregadorinvestimento.entity;
 
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 
 @Entity
-@Table(name = "tb_billing_address")
+@Table(name = "tb_billingaddress")
+@AllArgsConstructor
 public class BillingAddress {
     
     @Id
+    @Column(name = "account_id")
     private UUID id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @MapsId
+    @JoinColumn(name = "account_id")//nome da coluna na tabela atual
+    private Account account;
 
     @Column(name = "street")
     private String street;
@@ -25,13 +37,13 @@ public class BillingAddress {
 
     public BillingAddress() {
     }
-
+/* 
     public BillingAddress(UUID id, String street, Integer number) {
         this.id = id;
         this.street = street;
         this.number = number;
     }
-
+*/
     public UUID getId() {
         return id;
     }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.invest.agregadorinvestimento.dto.AccountResponseDTO;
+import com.invest.agregadorinvestimento.dto.CreateAccountDto;
 import com.invest.agregadorinvestimento.dto.CreateUserDto;
 import com.invest.agregadorinvestimento.dto.UpdateUserDTO;
 import com.invest.agregadorinvestimento.entity.User;
@@ -80,5 +82,20 @@ public class UserController {
          return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{userId}/accounts")
+    public ResponseEntity<Void> createAccount(@PathVariable("userId") String userId, @RequestBody CreateAccountDto createAccountDto) {
+
+        userService.createAccount(userId, createAccountDto);
+
+         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{userId}/accounts")
+    public ResponseEntity<List<AccountResponseDTO>> listAccount(@PathVariable("userId") String userId) {
+
+        var accounts = userService.listAccount(userId);
+
+         return ResponseEntity.ok(accounts);
+    }
 
 }

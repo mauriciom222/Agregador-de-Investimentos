@@ -1,19 +1,28 @@
 package com.invest.agregadorinvestimento.service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-
+import com.invest.agregadorinvestimento.dto.AccountResponseDTO;
+import com.invest.agregadorinvestimento.dto.CreateAccountDto;
 import com.invest.agregadorinvestimento.dto.CreateUserDto;
 import com.invest.agregadorinvestimento.dto.UpdateUserDTO;
+import com.invest.agregadorinvestimento.entity.Account;
+import com.invest.agregadorinvestimento.entity.BillingAddress;
 import com.invest.agregadorinvestimento.entity.User;
+import com.invest.agregadorinvestimento.repository.AccountRepository;
+import com.invest.agregadorinvestimento.repository.BillingAddressRepository;
 import com.invest.agregadorinvestimento.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
+
 
 
 
@@ -25,6 +34,8 @@ public class UserService {
     //para poder salvar, buscar, atualizar e deletar usuários
 
     private UserRepository userRepository;
+    private AccountRepository accoountRepository;
+    private BillingAddressRepository billingAddressRepository;
     
 /* 
     public UserService(UserRepository userRepository) {
@@ -101,6 +112,39 @@ public class UserService {
             userRepository.deleteById(id);
         }
         
+    }
+
+    public void createAccount(String userId, CreateAccountDto createAccountDto) {
+         
+
+        var user = userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuario nao encontrado"));
+        
+ 
+
+        //DTO para entidade
+        var accountEntity = new Account(null, user, null, createAccountDto.description(), new ArrayList<>()); 
+        
+
+        System.out.println(accountEntity.getAccountId()+" <------------------------- ID SALVO NO SERVICE");
+
+        var billingAddress = new BillingAddress(accountEntity.getAccountId(), accountEntity, createAccountDto.street(), createAccountDto.number());
+
+        accountEntity.setBillingAddress(billingAddress);
+        
+
+        billingAddressRepository.save(billingAddress);
+        accoountRepository.save(accountEntity);
+        System.out.println(accountEntity.getAccountId()+" <------------------------- ID SALVO NO SERVICE APOS SALVAR NO REPOSITORIO");
+        System.out.println(billingAddress.getId()+" <------------------------- ID DO BILLING ADDRESS SALVO NO SERVICE APOS SALVAR NO REPOSITORIO");
+        
+    }
+    public List<AccountResponseDTO> listAccount(String userId) {
+
+        var user = userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuario nao encontrado"));
+
+        var accounts = user.getAccounts().stream().map(ac -> new AccountResponseDTO(ac.getAccountId().toString(), ac.getDescription())).toList();
+        
+        return accounts;
     }
 
 }

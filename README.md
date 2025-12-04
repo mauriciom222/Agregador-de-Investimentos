@@ -37,4 +37,5 @@ erDiagram
     account_stock {
         int account_id PK
         int stock_id PK
+        int quantity
     }
