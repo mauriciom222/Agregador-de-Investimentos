@@ -3,7 +3,9 @@ package com.invest.agregadorinvestimento.controller;
 import java.net.URI;
 import java.util.List;
 
+
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,24 +22,26 @@ import com.invest.agregadorinvestimento.dto.UpdateUserDTO;
 import com.invest.agregadorinvestimento.entity.User;
 import com.invest.agregadorinvestimento.service.UserService;
 
-import lombok.AllArgsConstructor;
+//import lombok.AllArgsConstructor;
 
 
 
 @RestController
-@AllArgsConstructor
+//@AllArgsConstructor
 @RequestMapping("/v1/users")
 
 public class UserController {
     
     private UserService userService;
+
+
     
 
-    /* 
+    
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    */
+   
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto) {
@@ -61,6 +65,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> listUsers() {
         var users = userService.listUsers();
+        
 
         return ResponseEntity.ok(users);
     }
